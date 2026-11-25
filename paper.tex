@@ -1,0 +1,171 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\oeis}[1]{\href{https://oeis.org/#1}{\texttt{#1}}}
+
+\title{Counting Distinct Sums of Square Roots:\\
+Proof of the Asymptotic Conjecture in OEIS A397045}
+
+\author{Le Duy Phuc\thanks{Email: \href{mailto:leduyphuc1702@gmail.com}{\texttt{leduyphuc1702@gmail.com}}}}
+\date{November 25, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $a(n)$ be the number of distinct real numbers in $[n,n+1)$ that can be written as a finite sum of square roots of positive integers (\oeis{A397045}). Charles R.~Greathouse~IV conjectured that $\log a(n)\sim\kappa n^{2/3}$, possibly with $\kappa=(81\zeta(3)/\pi^2)^{1/3}=2.1447\ldots$. We prove
+\[
+ \log a(n)=\Bigl(\frac{81\zeta(3)}{\pi^2}\Bigr)^{1/3}n^{2/3}+O(n^{1/3}).
+\]
+The proof identifies $a(n)$ exactly with the number of partitions of energy below $n+1$ into parts $\sqrt d$, $d>1$ squarefree, which is possible because square roots of distinct squarefree integers are linearly independent over $\mathbb Q$. The asymptotic then follows from the squarefree counting law and an exponential-tilting argument with explicit error terms. We also report exact enumeration of the first twenty terms and a saddle-point comparison that matches $\log a(n)$ to within $0.004$ at $n=35$.
+\end{abstract}
+
+\noindent\textbf{MSC 2020:} 11P82, 05A17, 11J72.\\
+\textbf{Keywords:} sums of square roots, partitions with real parts, squarefree integers, Meinardus-type asymptotics, OEIS A397045.
+
+\section{Introduction}
+
+The sequence \oeis{A397045}, introduced by Ali Sada, counts the distinct values in $[n,n+1)$ of finite sums of square roots of positive integers:
+\[
+ 3,7,17,35,76,148,295,564,1068,1965,\ldots\qquad(n\ge1).
+\]
+Greathouse observed that $a(n)$ equals the number of distinct sums of square roots of integers $k>1$ in $[0,n+1)$, and conjectured (June 15, 2026)
+\[
+ \log a(n)\sim\kappa n^{2/3},\qquad \text{possibly } \kappa=\Bigl(\frac{81\zeta(3)}{\pi^2}\Bigr)^{1/3}=2.14471752\ldots
+\]
+
+\begin{theorem}\label{thm:main}
+As $n\to\infty$,
+\[
+ \log a(n)=\Bigl(\frac{81\zeta(3)}{\pi^2}\Bigr)^{1/3}n^{2/3}+O(n^{1/3}).
+\]
+\end{theorem}
+
+The error term is additive in the logarithm. The proof is elementary apart from the classical linear independence of square roots \cite{Besicovitch}; we include a short proof of the latter for completeness.
+
+\section{Exact identification}
+
+\begin{lemma}[Besicovitch]\label{lem:indep}
+The numbers $\sqrt d$, $d$ ranging over squarefree positive integers, are linearly independent over $\mathbb Q$.
+\end{lemma}
+
+\begin{proof}
+Let $p_1,\dots,p_m$ be the primes dividing the integers in a putative relation and $K_j=\mathbb Q(\sqrt{p_1},\dots,\sqrt{p_j})$. We show by induction that $[K_j:\mathbb Q]=2^j$, that the products $\sqrt{d}$, $d\mid p_1\cdots p_j$, form a basis, and that every sign change $\sqrt{p_i}\mapsto\pm\sqrt{p_i}$ is an automorphism. If $\sqrt{p_{j+1}}\in K_j$, then for each sign-change automorphism $\sigma$ of $K_j$ we have $\sigma(\sqrt{p_{j+1}})^2=p_{j+1}$, so $\sigma(\sqrt{p_{j+1}})=\pm\sqrt{p_{j+1}}$. The basis vectors are simultaneous eigenvectors of the sign changes with pairwise distinct characters, so $\sqrt{p_{j+1}}=c\sqrt d$ with $c\in\mathbb Q$ and $d\mid p_1\cdots p_j$. Squaring gives $p_{j+1}=c^2d$, impossible by unique factorisation. Hence $[K_{j+1}:K_j]=2$, the basis property propagates, and the sign changes extend. Linear independence of the basis is the claim.
+\end{proof}
+
+Every positive integer is uniquely $k=m^2d$ with $d$ squarefree, and $\sqrt k=m\sqrt d$. Hence the set of finite sums of square roots of positive integers is
+\[
+ \Bigl\{\sum_{d\ \mathrm{squarefree}}c_d\sqrt d:\ c_d\in\mathbb Z_{\ge0},\ \text{finitely many nonzero}\Bigr\}.
+\]
+This holds whether or not repeated summands are allowed, since $c\sqrt d=\sqrt{c^2d}$. By Lemma~\ref{lem:indep} every such value has exactly one coefficient vector $(c_d)$. Write $c_1$ for the coefficient of $\sqrt1=1$ and
+\[
+ E(c)=\sum_{d>1\ \mathrm{squarefree}}c_d\sqrt d,\qquad A(X)=\#\{(c_d)_{d>1}:E(c)<X\}.
+\]
+
+\begin{lemma}\label{lem:ident}
+$a(n)=A(n+1)$ for every $n\ge1$.
+\end{lemma}
+
+\begin{proof}
+If $E<n+1$, the unique choice $c_1=n-\lfloor E\rfloor\ge0$ puts $c_1+E$ in $[n,n+1)$. Conversely, a value in $[n,n+1)$ has $E\le$ value $<n+1$ and $c_1$ is determined by $E$. Uniqueness of the representation makes the correspondence bijective.
+\end{proof}
+
+\section{Squarefree counting and the partition function}
+
+Let $c=1/\zeta(2)=6/\pi^2$ and $N(x)=\#\{d>1\text{ squarefree}:\sqrt d\le x\}$. From $\mu^2(d)=\sum_{j^2\mid d}\mu(j)$,
+\[
+ \sum_{d\le y}\mu^2(d)=\sum_{j\le\sqrt y}\mu(j)\Bigl\lfloor\frac y{j^2}\Bigr\rfloor=cy+O(\sqrt y),
+\]
+so $N(x)=cx^2+O(x)$ uniformly for $x>0$. For $\ell=0,1,2$ and $u>0$ put $S_\ell(u)=\sum_{d>1}(\sqrt d)^\ell e^{-u\sqrt d}$, the sum over squarefree $d$. Stieltjes integration against $dN$ and integration by parts give
+\begin{equation}\label{eq:S}
+ S_\ell(u)=2c(\ell+1)!\,u^{-\ell-2}+O(u^{-\ell-1})\qquad(u>0),
+\end{equation}
+with an absolute implied constant: the main term is $\int_0^\infty x^\ell e^{-ux}\,2cx\,dx$, and the remainder is bounded by a constant times $\int_0^\infty x\,|(x^\ell e^{-ux})'|\,dx=O(u^{-\ell-1})$.
+
+For $t>0$ let
+\[
+ Z(t)=\sum_{(c_d)}e^{-tE(c)}=\prod_{d>1\ \mathrm{squarefree}}\bigl(1-e^{-t\sqrt d}\bigr)^{-1},\qquad B=2c\,\zeta(3)=\frac{12\zeta(3)}{\pi^2}.
+\]
+Expanding $-\log(1-e^{-x})=\sum_j e^{-jx}/j$ and using \eqref{eq:S},
+\begin{equation}\label{eq:logZ}
+ \log Z(t)=\sum_{j\ge1}\frac{S_0(jt)}j=\frac B{t^2}+O\Bigl(\frac1t\Bigr).
+\end{equation}
+Let $\mathbb P_t(c)=Z(t)^{-1}e^{-tE(c)}$. Under $\mathbb P_t$ the $c_d$ are independent geometric variables, and differentiating \eqref{eq:logZ} termwise (or computing directly) gives
+\begin{align}
+ \mu_t&=\mathbb E_tE=\sum_{j\ge1}S_1(jt)=\frac{2B}{t^3}+O\Bigl(\frac1{t^2}\Bigr),\label{eq:mean}\\
+ \sigma_t^2&=\operatorname{Var}_tE=\sum_{j\ge1}jS_2(jt)=\frac{6B}{t^4}+O\Bigl(\frac1{t^3}\Bigr).\label{eq:var}
+\end{align}
+The error sums converge, being bounded by constants times $\zeta(2)$ times $t^{-1},t^{-2},t^{-3}$.
+
+\section{Proof of Theorem~\ref{thm:main}}
+
+Note that $\min_{t>0}(tX+B/t^2)$ is attained at $t_0=(2B/X)^{1/3}$ with value $3(B/4)^{1/3}X^{2/3}$, and $3(B/4)^{1/3}=(81\zeta(3)/\pi^2)^{1/3}$.
+
+\emph{Upper bound.} Every vector with $E<X$ contributes at least $e^{-tX}$ to $Z(t)$, so $A(X)\le e^{tX}Z(t)$. Taking $t=t_0$ in \eqref{eq:logZ},
+\[
+ \log A(X)\le 3(B/4)^{1/3}X^{2/3}+O(X^{1/3}).
+\]
+
+\emph{Lower bound.} Let $L>0$ be a constant to be fixed, $Y=X-LX^{2/3}$ and $t=(2B/Y)^{1/3}$. For large $X$ we have $Y\in[X/2,X]$, and \eqref{eq:mean}, \eqref{eq:var} give constants $C_1,C_2$, independent of $L$, with
+\[
+ |\mu_t-Y|\le C_1X^{2/3},\qquad \sigma_t\le C_2X^{2/3}.
+\]
+Fix $L>C_1+2C_2+1$ and $M>L+C_1+2C_2+1$. Then $[\mu_t-2C_2X^{2/3},\mu_t+2C_2X^{2/3}]\subset[X-MX^{2/3},X)$, so by Chebyshev's inequality the event $G=\{X-MX^{2/3}\le E<X\}$ has $\mathbb P_t(G)\ge3/4$. Since $e^{-tE}\le e^{-t(X-MX^{2/3})}$ on $G$,
+\[
+ A(X)\ge\#G\ge\tfrac34 Z(t)\,e^{t(X-MX^{2/3})}.
+\]
+As $t\asymp X^{-1/3}$, \eqref{eq:logZ} yields $\log A(X)\ge tX+B/t^2-O(X^{1/3})\ge3(B/4)^{1/3}X^{2/3}-O(X^{1/3})$.
+
+Combining both bounds with Lemma~\ref{lem:ident} and $(n+1)^{2/3}=n^{2/3}+O(n^{-1/3})$ proves the theorem. \qed
+
+\section{Numerical evidence and the next term}
+
+The script \texttt{verify\_a397045.py} enumerates all radical vectors of energy below $21$ with integer arithmetic only: $\sqrt d$ is enclosed in $[w,w+1)/Q$ with $w=\lfloor Q\sqrt d\rfloor$, $Q=10^{12}$, and the enumeration asserts that the integer part of every enumerated energy is determined. Via Lemma~\ref{lem:ident} it reproduces $a(1),\dots,a(20)$. Table~\ref{tab:num} compares $\log a(n)$ for $n\le35$ (terms beyond $20$ from the OEIS entry) with the saddle-point value
+\[
+ \Lambda(X)=tX+\log Z(t)-\log\bigl(t\sqrt{2\pi\sigma_t^2}\bigr),\qquad \mu_t=X=n+1,
+\]
+which is what a local limit theorem for $E$ under $\mathbb P_t$ would give for $\log A(X)$.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{rrrrr}
+\toprule
+$n$ & $\log a(n)$ & $\Lambda(n+1)$ & difference & $\kappa n^{2/3}$\\
+\midrule
+5 & 4.3307 & 4.2998 & 0.0309 & 6.2712\\
+10 & 7.5832 & 7.5762 & 0.0071 & 9.9549\\
+20 & 13.0346 & 13.0298 & 0.0048 & 15.8024\\
+30 & 17.7169 & 17.7130 & 0.0038 & 20.7070\\
+35 & 19.8755 & 19.8720 & 0.0035 & 22.9482\\
+\bottomrule
+\end{tabular}
+\caption{$\log a(n)$ against the saddle-point value and the leading term, $\kappa=(81\zeta(3)/\pi^2)^{1/3}$.}\label{tab:num}
+\end{table}
+
+\begin{remark}
+The table shows that the slow approach of $\log a(n)/n^{2/3}$ to $\kappa$ (it is $1.86$ at $n=35$) is caused by lower-order terms, not by a wrong constant. Proving $a(n)\sim e^{\Lambda(n+1)}$ would require a local limit theorem, i.e.\ control of $Z(t+i\tau)/Z(t)$ through exponential sums $\sum e^{i\tau\sqrt d}$ over squarefree $d$, which we do not attempt. A Mellin analysis of $\sum_d e^{-u\sqrt d}$, whose Dirichlet series is $\zeta(s/2)/\zeta(s)$, indicates that $\log Z(t)$ has no term of exact order $t^{-1}$; the next terms are logarithmic, together with oscillating contributions from the zeros of $\zeta(s)$. We therefore expect the error in Theorem~\ref{thm:main} to be $o(n^{1/3})$, but we do not claim it.
+\end{remark}
+
+\section*{Acknowledgements}
+The sequence is due to Ali Sada and the conjecture to Charles R.~Greathouse~IV. Parts of the derivation and code were developed with AI assistance; all statements were checked by the author and all computations are reproducible with the accompanying script.
+
+\begin{thebibliography}{9}
+\bibitem{OEIS} OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences}, \url{https://oeis.org}; entries A397045, A013928.
+\bibitem{Besicovitch} A. S. Besicovitch, On the linear independence of fractional powers of integers, \emph{J. London Math. Soc.} \textbf{15} (1940), 3--6.
+\bibitem{HardyWright} G. H. Hardy and E. M. Wright, \emph{An Introduction to the Theory of Numbers}, 6th ed., Oxford University Press, 2008, \S18.6 (squarefree numbers).
+\end{thebibliography}
+
+\end{document}
